@@ -1,0 +1,98 @@
+name: Validate Rules
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate-rules:
+    name: Validate rule files
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify README exists
+        run: |
+          if [ ! -f README.md ]; then
+            echo "ERROR: README.md is required"
+            exit 1
+          fi
+          echo "README.md present"
+
+      - name: Verify LICENSE exists
+        run: |
+          if [ ! -f LICENSE ]; then
+            echo "ERROR: LICENSE is required"
+            exit 1
+          fi
+          echo "LICENSE present"
+
+      - name: Verify required rule sections
+        env:
+          RULE: ${{ github.workspace }}/rules/evidence-first-analysis.md
+        run: |
+          if [ ! -f "$RULE" ]; then
+            echo "ERROR: rules/evidence-first-analysis.md is required"
+            exit 1
+          fi
+
+          # Check for required sections in the canonical rule
+          for section in "## When to Apply" "## Core Discipline" "## Step 1: Mandatory Scanning Actions" "## Step 2: Mandatory Output Structure" "## Anti-Patterns" "## Self-Check"; do
+            if ! grep -qF "$section" "$RULE"; then
+              echo "ERROR: rules/evidence-first-analysis.md missing section: $section"
+              exit 1
+            fi
+          done
+          echo "All 6 required sections present in rules/evidence-first-analysis.md"
+
+      - name: Verify failure-cases.md exists and has cases
+        env:
+          FC: ${{ github.workspace }}/rules/failure-cases.md
+        run: |
+          if [ ! -f "$FC" ]; then
+            echo "ERROR: rules/failure-cases.md is required"
+            exit 1
+          fi
+
+          # Count "### Case" headings
+          count=$(grep -cE "^### Case " "$FC" || true)
+          if [ "$count" -lt 1 ]; then
+            echo "ERROR: rules/failure-cases.md must have at least 1 case"
+            exit 1
+          fi
+          echo "rules/failure-cases.md has $count case(s)"
+
+      - name: Verify CHANGELOG updated on rule change
+        if: github.event_name == 'pull_request'
+        run: |
+          # Check if any file under rules/ changed
+          if git diff --name-only origin/main...HEAD | grep -qE "^rules/"; then
+            if ! git diff --name-only origin/main...HEAD | grep -qE "^CHANGELOG.md"; then
+              echo "ERROR: rules/ changed but CHANGELOG.md was not updated"
+              exit 1
+            fi
+            echo "CHANGELOG.md updated alongside rules/ changes"
+          else
+            echo "No rules/ changes, skipping CHANGELOG check"
+          fi
+
+      - name: Verify integration files have installation notes
+        run: |
+          for dir in integrations/*/; do
+            if [ ! -d "$dir" ]; then continue; fi
+            if [ ! -f "$dir/README.md" ]; then
+              echo "WARN: $dir has no README.md"
+            fi
+            for f in "$dir"/*; do
+              if [ -f "$f" ] && [ "$(basename "$f")" != "README.md" ]; then
+                if ! grep -qE "Installation|installation" "$f"; then
+                  echo "WARN: $f may lack installation notes"
+                fi
+              fi
+            done
+          done
+          echo "Integration directories checked"
