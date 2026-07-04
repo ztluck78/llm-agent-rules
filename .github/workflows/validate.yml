@@ -58,8 +58,8 @@ jobs:
             exit 1
           fi
 
-          # Count "### Case" headings
-          count=$(grep -cE "^### Case " "$FC" || true)
+          # Count case headings (either "## Case" or "### Case")
+          count=$(grep -cE "^##+ Case " "$FC" || true)
           if [ "$count" -lt 1 ]; then
             echo "ERROR: rules/failure-cases.md must have at least 1 case"
             exit 1
