@@ -1,0 +1,120 @@
+# Aider: Evidence-First Analysis Rule
+# Place at: <project-root>/CONVENTIONS.md
+# Reference: https://aider.chat/docs/conventions.html
+
+# ============================================================================
+# When to apply
+# ============================================================================
+
+Apply this rule when the user message contains any of:
+- 全面分析 / 系统排查 / 复盘 / 调研 / 全面了解
+- audit / investigation / review / assess / deep dive / why does this keep happening
+- Any open-ended question requiring systematic understanding of code or a problem
+
+Do NOT apply to: simple Q&A, single-line fixes, code completion, style conversations.
+
+# ============================================================================
+# Core discipline
+# ============================================================================
+
+Call tools to scan the code first → gather real evidence → then analyze and synthesize.
+Forbidden: giving abstract insights before evidence, using pattern matching as a substitute for grep.
+
+# ============================================================================
+# Step 1: Mandatory scanning actions
+# ============================================================================
+
+Before giving any analysis, invoke tools to collect real evidence. Complete at least 3 of:
+
+1. Read key files
+   - Project entry points (package.json, README, AGENTS.md)
+   - 3-5 source files most relevant to the question
+   - Recent commits (git log --oneline -10)
+
+2. Run project checks (if available)
+   - Data consistency / schema validation
+   - Linter / formatter
+   - Type checker
+   - Unit tests
+
+3. Search for patterns
+   - grep for keywords related to the question
+   - file listing for the relevant directory structure
+   - Search for bugs that already exist but no one has mentioned yet
+
+4. Read tool outputs verbatim
+   - Quote actual grep results, test output, error messages
+   - Do not paraphrase tool outputs into vague summaries
+
+# ============================================================================
+# Step 2: Mandatory output structure
+# ============================================================================
+
+## 2.1 Real findings (required)
+
+For each finding, output:
+- [file:line] Phenomenon: <what is wrong>
+  Evidence: <grep result / test output / commit info>
+  Severity: High / Medium / Low
+
+## 2.2 Systematic causes (synthesized from 2.1)
+
+Synthesize causes from the actual findings in 2.1.
+Do NOT synthesize from training-data experience.
+Each cause MUST reference at least one finding from 2.1 as evidence.
+
+## 2.3 Fix recommendations (specific to files)
+
+List which files, which lines, what change.
+Do NOT write "in the future, pay attention to X / Y / Z".
+DO write "now change file:line to add min-width: 0".
+
+# ============================================================================
+# Anti-patterns (explicitly forbidden)
+# ============================================================================
+
+- "Give 5 reasons first, then add evidence as an afterthought"
+- Abstract "systemic problems" with no concrete file:line reference
+- Skipping the scan and saying "I think..."
+- Pattern matching substituting for grep
+- Listing "best practices" from outside the code without referencing the actual code
+- Confident presentation masking the absence of evidence
+
+# ============================================================================
+# Mandatory opening
+# ============================================================================
+
+Every response must begin with:
+
+    Scan complete. Found N real issues (X severe / Y medium / Z minor):
+    1. [file:line] Phenomenon / Evidence
+    2. [file:line] Phenomenon / Evidence
+    ...
+
+If the scan finds no issues, still write explicitly:
+"Scan complete. Inspected X files / Y commits. No new issues found."
+
+# ============================================================================
+# Self-check (before sending)
+# ============================================================================
+
+- [ ] I invoked at least 3 tools to gather evidence
+- [ ] Every claim references a concrete file:line
+- [ ] I did not write "this kind of problem is usually caused by X, Y, Z" (that is deduction, not induction)
+- [ ] Fix recommendations are specific to files, not "be careful in the future"
+- [ ] The response begins with a "Scan complete" signal
+
+# ============================================================================
+# Installation notes for Aider
+# ============================================================================
+
+- Project-level: copy to `<project-root>/CONVENTIONS.md`
+- Aider auto-loads CONVENTIONS.md as part of the system prompt
+- For monorepos, place in each subproject's root
+
+# ============================================================================
+# Reference
+# ============================================================================
+
+For the canonical version, see:
+https://github.com/ztluck78/llm-agent-rules/blob/main/rules/evidence-first-analysis.md
