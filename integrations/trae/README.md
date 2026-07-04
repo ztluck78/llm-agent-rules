@@ -8,6 +8,8 @@
 | 文件 | 用途 |
 |------|------|
 | `SKILL.md` | Trae Skill 格式的规则文件（带 frontmatter） |
+| `README.md` | 本文件 — 快速安装与验证 |
+| `USAGE.md` | 详细使用指南（5 个真实场景、故障排查、高级用法） |
 
 ## 安装 / Installation
 

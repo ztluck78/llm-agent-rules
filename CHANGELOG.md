@@ -12,6 +12,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Failure case submissions from real users
 - Translations (Spanish, Japanese, German)
 
+## [1.1.1] - 2026-07-04
+
+### Added
+- `integrations/trae/USAGE.md` — comprehensive Trae IDE usage guide:
+  - 3 install methods (global / project / inline)
+  - 3-step verification (mandatory "Scan complete" opener, [file:line] count, fix specificity)
+  - Trigger keyword list (Chinese + English)
+  - 5 real usage scenarios with expected response examples
+  - Tool mapping table (Read / RunCommand / Grep / Glob / git)
+  - 5 troubleshooting recipes
+  - Advanced usage (custom skills, multi-skill composition, AGENTS.md linking)
+
+### Changed
+- `integrations/trae/README.md` — file list now mentions USAGE.md as a companion document
+
 ## [1.1.0] - 2026-07-04
 
 ### Added — Phase 2: Production-Ready Open Source Project
