@@ -74,15 +74,43 @@ See [prompts/full-analysis.md](./prompts/full-analysis.md).
 
 ```
 llm-agent-rules/
-├── README.md                         # This file
-├── LICENSE                           # MIT
-├── rules/
-│   ├── evidence-first-analysis.md    # Core rule
-│   └── failure-cases.md              # Real failure examples
-├── integrations/                     # Per-tool integration files
-├── prompts/                          # Copy-paste prompts
-├── examples/                         # Real usage examples
-└── docs/                             # Deep-dive documentation
+├── README.md                          # This file (bilingual)
+├── LICENSE                            # MIT
+├── CHANGELOG.md                       # Release history (Keep a Changelog)
+├── CONTRIBUTING.md                    # How to propose rules, integrations, fixes
+│
+├── rules/                             # Canonical rules (markdown, tool-agnostic)
+│   ├── evidence-first-analysis.md     # Core rule (6-section template)
+│   ├── failure-cases.md               # Real failure examples
+│   └── design-rationale.md            # Why the rule is structured this way
+│
+├── integrations/                      # Per-tool wrapper files
+│   ├── trae/SKILL.md                  # Trae IDE
+│   ├── cursor/.cursorrules            # Cursor
+│   ├── claude-code/CLAUDE.md          # Claude Code
+│   ├── github-copilot/copilot-instructions.md  # GitHub Copilot
+│   ├── aider/CONVENTIONS.md           # Aider
+│   └── continue/.continuerules        # Continue.dev / Cody / others
+│   (Each integration directory also has its own README.md with install steps)
+│
+├── prompts/                           # Copy-paste prompts
+│   └── full-analysis.md               # English + Chinese
+│
+├── examples/                          # Real usage examples
+│   └── good-bad-comparison.md         # Side-by-side
+│
+├── docs/                              # Deep-dive documentation
+│   ├── why-evidence-first.md          # Design rationale (deeper)
+│   ├── extending-rules.md             # How to add new rules
+│   └── common-pitfalls.md             # 10 mistakes when applying the rule
+│
+└── .github/
+    ├── workflows/validate.yml         # CI: validates rule structure
+    ├── PULL_REQUEST_TEMPLATE.md       # PR template with quality bar
+    └── ISSUE_TEMPLATE/
+        ├── bug_report.yml
+        ├── feature_request.yml
+        └── question.yml
 ```
 
 ## License

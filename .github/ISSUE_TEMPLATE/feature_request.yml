@@ -1,0 +1,78 @@
+name: Feature request
+description: Propose a new rule, integration, or improvement
+title: "[Feature] "
+labels: ["enhancement", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for proposing an improvement. Please fill out the form below.
+        For **new rules**, see [CONTRIBUTING.md](../CONTRIBUTING.md) for the quality bar.
+
+  - type: dropdown
+    id: type
+    attributes:
+      label: Type of request
+      options:
+        - New rule (evidence-first methodology)
+        - New tool integration
+        - New failure case (real observed)
+        - Translation
+        - Documentation improvement
+        - New example
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: target
+    attributes:
+      label: Target file or directory
+      description: Where would this change go? (e.g. `rules/`, `integrations/cody/`, `docs/`)
+      placeholder: "e.g. integrations/cody/"
+    validations:
+      required: true
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivation
+      description: Why is this needed? Cite a real scenario.
+      placeholder: |
+        Example: I tried using the rule with Sourcegraph Cody, but it doesn't read
+        `.cursorrules`. I want a `.cody/rules/` integration.
+    validations:
+      required: true
+
+  - type: textarea
+    id: real-failure
+    attributes:
+      label: Real failure case (if rule-related)
+      description: For new rules: paste the actual LLM output that motivated this rule.
+    validations:
+      required: false
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: What do you want to add? Be specific.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: What other approaches did you consider?
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist (for new rules)
+      options:
+        - label: I have a real failure case (not hypothetical)
+        - label: I have a draft 6-section structure
+        - label: I have read CONTRIBUTING.md

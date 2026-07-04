@@ -1,0 +1,33 @@
+name: Question
+description: Ask a question about using the rule or contributing
+title: "[Question] "
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Have a question? This is the right template.
+        For **bugs**, use the bug report template. For **new rules / integrations**, use the feature request template.
+
+  - type: textarea
+    id: question
+    attributes:
+      label: Your question
+      description: Be specific. What are you trying to do? What have you tried?
+    validations:
+      required: true
+
+  - type: input
+    id: tool
+    attributes:
+      label: Tool / context (if applicable)
+      description: Which AI tool or project are you working with?
+      placeholder: "e.g. Cursor 1.2.0 + Python project"
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Anything else that might help us answer.
+    validations:
+      required: false
